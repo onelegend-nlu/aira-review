@@ -1,0 +1,24 @@
+.venv
+.venv-build
+__pycache__
+*.pyc
+.git
+data
+hf-cache
+.env
+frontend/node_modules
+frontend/.next
+# Chỉ loại khỏi Docker build context, vẫn giữ trong cây làm việc:
+# ảnh chụp kiểm chứng, kết quả benchmark, dữ liệu thí nghiệm
+# và các file ghi chú rời ở root.
+ui-screenshots*/
+benchmark-v1/
+evaluation_v3/
+evaluation_v4/
+TASK-008-RESULT.md
+CLEAN_PACKAGE_NOTES.md
+PATCH_NOTES.md
+PATCH_NOTES_V2.md
+README_FLASHCARD_PHASE1.txt
+REFACTOR_BRIEF.md
+frontend_modular_ui.png

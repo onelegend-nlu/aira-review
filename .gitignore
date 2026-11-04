@@ -1,0 +1,7 @@
+# Never commit real environment files or local secrets
+.env
+*.bak*
+__pycache__/
+*.pyc
+node_modules/
+.next/

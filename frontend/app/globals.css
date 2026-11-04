@@ -1,0 +1,245 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* Nền navy sâu có gradient rất nhẹ (xanh dương ở góc trên phải,
+     chàm ở góc dưới trái) để các panel bán trong suốt nổi lên. */
+  background:
+    radial-gradient(
+      1200px 600px at 85% -10%,
+      rgba(37, 99, 235, 0.13),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 520px at -10% 110%,
+      rgba(79, 70, 229, 0.1),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #030a1e 0%, #020617 45%, #010409 100%);
+  background-attachment: fixed;
+  color: #f8fafc;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: #f8fafc;
+}
+
+/* Thanh cuộn mảnh theo theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b transparent;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hiệu ứng xuất hiện nhẹ cho tin nhắn mới */
+@keyframes aira-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.aira-msg-in {
+  animation: aira-msg-in 0.35s ease both;
+}
+
+/* Hiệu ứng fade-in mượt khi chuyển tab */
+@keyframes aira-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: aira-fade-in 0.2s ease-out both;
+}
+
+/* Con trỏ nhấp nháy cho text đang stream */
+@keyframes aira-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.aira-cursor-blink {
+  animation: aira-blink 0.8s infinite;
+}
+
+/* Mở trích dẫn mượt mà */
+details[open] > div {
+  animation: aira-details-in 0.22s ease-out both;
+}
+
+@keyframes aira-details-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Markdown trong bong bóng trả lời của AIRA (react-markdown).
+   Không dùng plugin typography — tự style theo hệ nền tối. */
+.aira-markdown p {
+  margin: 0 0 0.75em;
+}
+
+.aira-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.aira-markdown strong {
+  color: #f1f5f9;
+  font-weight: 700;
+}
+
+.aira-markdown em {
+  font-style: italic;
+}
+
+.aira-markdown ul,
+.aira-markdown ol {
+  margin: 0 0 0.75em;
+  padding-left: 1.4em;
+}
+
+.aira-markdown ul {
+  list-style: disc;
+}
+
+.aira-markdown ol {
+  list-style: decimal;
+}
+
+.aira-markdown li {
+  margin: 0.25em 0;
+}
+
+.aira-markdown li > p {
+  margin: 0;
+}
+
+/* Tiêu đề trong câu trả lời: giới hạn cỡ vừa, không to hơn
+   nội dung quá nhiều. */
+.aira-markdown h1 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0.9em 0 0.45em;
+}
+
+.aira-markdown h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0.9em 0 0.45em;
+}
+
+.aira-markdown h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0.8em 0 0.4em;
+}
+
+.aira-markdown h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.8em 0 0.4em;
+}
+
+.aira-markdown h1:first-child,
+.aira-markdown h2:first-child,
+.aira-markdown h3:first-child,
+.aira-markdown h4:first-child {
+  margin-top: 0;
+}
+
+.aira-markdown code {
+  background: #1e293b;
+  border-radius: 0.375rem;
+  padding: 0.1em 0.35em;
+  font-size: 0.85em;
+}
+
+.aira-markdown pre {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin: 0 0 0.75em;
+  overflow-x: auto;
+}
+
+.aira-markdown pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.aira-markdown blockquote {
+  border-left: 3px solid #475569;
+  padding-left: 0.9em;
+  margin: 0 0 0.75em;
+  color: #cbd5e1;
+}
+
+.aira-markdown a {
+  color: #60a5fa;
+  text-decoration: underline;
+}

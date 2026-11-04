@@ -1,0 +1,82 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: my-rag-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: rag
+      POSTGRES_USER: rag
+      # Mật khẩu lấy từ biến môi trường POSTGRES_PASSWORD
+      # (đặt trong file .env cạnh docker-compose.yml hoặc
+      # export từ shell) — không ghi mật khẩu cứng vào file này.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    # Không publish cổng 5432 ra host: Postgres chỉ reachable
+    # trong mạng nội bộ của compose (backend gọi qua tên
+    # service "postgres").
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U rag -d rag"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  backend:
+    build: .
+    container_name: my-rag-backend
+    restart: unless-stopped
+
+    environment:
+      # Chuỗi kết nối lắp từ cùng biến POSTGRES_PASSWORD ở trên
+      # để mật khẩu chỉ khai báo một nơi duy nhất.
+      DATABASE_URL: postgresql+asyncpg://rag:${POSTGRES_PASSWORD}@postgres:5432/rag
+      # GEMINI_API_KEY và AIRA_API_KEY lấy từ file .env cạnh
+      # docker-compose.yml (không commit file này).
+
+    env_file:
+      - .env
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - app_data:/app/data
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Địa chỉ backend mà TRÌNH DUYỆT của người dùng gọi tới.
+        # Deploy trên VPS/domain: đổi thành https://api.<domain>
+        # hoặc http://<IP-VPS>:8000 cho phù hợp rồi build lại.
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://127.0.0.1:8000}
+
+    container_name: my-rag-frontend
+    restart: unless-stopped
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - backend
+
+
+
+volumes:
+  postgres_data:
+  app_data:
