@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const PIPELINE_STEPS = [
   "Chia đoạn 512 token (chồng lấp 10%)",
   "Embedding multilingual-e5-small",
@@ -30,7 +34,18 @@ const CONFIG_ROWS: Array<[string, string]> = [
   ["Generation", "Gemini"],
 ];
 
+const TEAM_MEMBERS: Array<[string, string]> = [
+  ["Phạm Tấn Phát", "231166078"],
+  ["Nguyễn Quân", "231166090"],
+  ["Đặng Ngọc Linh", "231166045"],
+  ["Lâm Thị Bích Ngọc", "231166064"],
+  ["Vương An Thuận", "231166108"],
+  ["Đào Tiến Phát", "231166075"],
+  ["Nguyễn Anh Hào", "231166024"],
+];
+
 export default function SystemInfoPanel() {
+  const [showTeam, setShowTeam] = useState(false);
   return (
     <div className="flex-1 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6">
       <div className="mx-auto flex max-w-4xl flex-col gap-8">
@@ -42,11 +57,12 @@ export default function SystemInfoPanel() {
           </h2>
 
           <p className="text-sm leading-7 text-slate-300">
-            AIRA (AI Retrieval Assistant) là trợ lý học tập giúp tra cứu và hỏi
-            đáp trực tiếp trên tài liệu PDF tiếng Việt mà người dùng nạp vào.
-            Mọi câu trả lời chỉ dựa trên nội dung tài liệu đã nạp, kèm trích
-            dẫn tới đúng trang và đoạn nguồn; khi tài liệu không có căn cứ, hệ
-            thống từ chối trả lời thay vì suy đoán.
+            AIRA là đồ án nhóm mình làm để hỏi đáp trên tài liệu PDF tiếng
+            Việt. Cách dùng đơn giản: bạn nạp file PDF vào, rồi hỏi trực tiếp
+            trên nội dung của file đó. Câu trả lời chỉ lấy từ trong tài liệu,
+            kèm trích dẫn tới đúng trang, đúng đoạn. Nếu trong tài liệu không
+            có căn cứ thì hệ thống nói thẳng là không tìm thấy, chứ không tự
+            suy đoán thêm.
           </p>
         </section>
 
@@ -179,6 +195,69 @@ export default function SystemInfoPanel() {
             thống trả lời kèm trích dẫn và từ chối khi tài liệu không có căn
             cứ.
           </p>
+        </section>
+
+        {/* THÔNG TIN NHÓM THỰC HIỆN — thu gọn mặc định, bấm để xem thêm */}
+        <section className="rounded-2xl border border-slate-800 bg-slate-900/40">
+          <button
+            type="button"
+            onClick={() => setShowTeam((open) => !open)}
+            aria-expanded={showTeam}
+            className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-slate-800/40"
+          >
+            <span className="text-sm font-medium text-slate-200">
+              Thông tin nhóm thực hiện
+            </span>
+
+            <span className="flex shrink-0 items-center gap-2 text-xs text-slate-400">
+              <span>Nhóm 10 · Lớp DH23HM</span>
+
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`h-4 w-4 transition-transform ${
+                  showTeam ? "rotate-180" : ""
+                }`}
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </span>
+          </button>
+
+          {showTeam && (
+            <div className="border-t border-slate-800 px-5 py-5">
+              <p className="text-sm leading-7 text-slate-300">
+                Ứng dụng này được xây dựng bởi nhóm 10, lớp DH23HM, trong khuôn
+                khổ học phần Cơ sở và Ứng dụng Trí tuệ Nhân tạo, Trường Đại
+                học Nông Lâm.
+              </p>
+
+              <h3 className="mb-3 mt-5 text-sm font-semibold text-slate-100">
+                Thành viên nhóm
+              </h3>
+
+              <div className="overflow-x-auto rounded-2xl border border-slate-800">
+                <div className="min-w-[320px]">
+                  {TEAM_MEMBERS.map(([name, mssv], index) => (
+                    <div
+                      key={mssv}
+                      className={`flex items-center justify-between gap-4 px-4 py-3 text-sm ${
+                        index % 2 === 0 ? "bg-slate-900/60" : "bg-slate-950/60"
+                      }`}
+                    >
+                      <span className="text-slate-100">{name}</span>
+                      <span className="font-medium text-slate-300">{mssv}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </div>
